@@ -53,12 +53,12 @@ jobs:
         if: ${{ steps.login.outcome != 'success' }}
         run: echo "Docker 登录失败"
 
-      - name: 拉取、标记并推送 Docker 镜像
-        id: pull_tag_push
-        run: |
-          docker pull --platform ${{ github.event.inputs.ARCH }} ${{ github.event.inputs.IMAGE_NAME }}
-          docker tag ${{ github.event.inputs.IMAGE_NAME }} ${{ github.event.inputs.TARGET_REGISTRY }}/${{ github.event.inputs.TARGET_REPOSITORY }}/${{ github.event.inputs.TARGET_DOCKRE_REGISTRY }}
-          docker push ${{ github.event.inputs.TARGET_REGISTRY }}/${{ github.event.inputs.TARGET_REPOSITORY }}/${{ github.event.inputs.TARGET_DOCKRE_REGISTRY }}
+- name: 拉取、标记并推送
+  run: |
+    docker pull --platform linux/amd64 chrischoy/minkowski_engine:v0.5.4
+    docker tag chrischoy/minkowski_engine:v0.5.4 \
+      ${{ secrets.REGISTRY }}/minkowski/minkowski_engine:v0.5.4
+    docker push ${{ secrets.REGISTRY }}/minkowski/minkowski_engine:v0.5.4
         # continue-on-error: true
 
       - name: 检查镜像推送成功
